@@ -1,6 +1,6 @@
 /*
 *Authors: Martín Morales Trejo and Gabriel Peytral Borja
-*e-mail: martin.mo.tre@comunidad.unam.mx
+*e-mail: martin.mo.tre@comunidad.unam.mx//Gabrielpeytral@comunidad.unam.mx
 *Oct 18, 2021
  Definición de la clase OperacionesDeCalculadora. Este archivo representa la interfáz public de
  la clase "OperacionesDeCalculadora" sin revelar las implementaciones de las funciones miembro, las
@@ -29,21 +29,30 @@ public:
 	float ObtenerI();
 
 	//Valor de resistencias por código de colores
-	void EstablecerValoresDeBanda(int primer, int segunda, int tercera); //Función para darle el valor a las variables
+	void EstablecerValoresDeBanda(double primer, double segunda, double tercera); //Función para darle el valor a las variables
 	void EstablecerValorTolerancia(std::string tolerancia);
 	void EstablecerEscala(char escala);
-	void ValorDeResistencia(int primer, int segunda, int tercera);
+	void ValorDeResistencia(double primer, double segunda, double tercera);
 	int ObtenerValorResistencia();
 	char ObtenerEscala();
 	std::string ObtenerTolerancia();
 
-
 	//Definir valor de resistenica para Diodo LED
 
-	//Cálculos con capacitores
+	double ObtenerVoltajeResistencia();
+	double ObtenerValorDeFuente();
+	double ObtenerValorDeCorrienteDelCircuito();
+	double ObtenerValorDeVoltajeLED();
+	double ObtenerValorResistenciaSugerida();
+	void EstablecerValorDeFuente(double fuente);
+	void EstablecerValorDeCorrienteDelCircuito(double corrienteEsperada);
+	void EstablecerVoltajeDiodo(double VoltajeDiodo);
+	void CalculoVoltajeResistencia(double fuente, double VoltajeDiodo);
+	void ResistenciaSugerida(double VoltajeResistencia, double corrienteEsperada);
 
-	//Cálculos con inductores
 
+
+	
 
 //Definimos las "variables atributo" o los "datos miembros"
 /*
@@ -59,23 +68,20 @@ private:
 		float R = 0;
 		float I = 0;
 		//Valor de resistencias por bandas de colores
-		int ValorResistencia = 0;
-		int PrimerBanda = 0;
-		int SegundaBanda = 0;
-		int TercerBandaMultiplicadora = 0;
-		char Escala;
+		double ValorResistencia = 0;
+		double PrimerBanda = 0;
+		double SegundaBanda = 0;
+		double TercerBandaMultiplicadora = 0;
+		char Escala=0;
 		std::string Tolerancia;
 
 		//Definir valor de resistenica para Diodo LED
-
-		//Cálculos con capacitores
-
-		//Cálculos con inductores
-
-		//Ley de kirchoff
-
-		//Amplicadores operacionales
+		double Fuente = 0;
+		double CorrienteEsperada = 0;
+		double VoltajeDiodo = 0;
+		double VoltajeResistencia=0;
+		double ResistenciaSugeridaLED=0;
 };
 
-#endif //PUNTO_2D
+#endif //OPERACIONES_ELECTRONICA
 

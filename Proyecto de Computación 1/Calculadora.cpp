@@ -17,10 +17,21 @@ char DefinirNResistencias();
 void EstablecerValoresResistencias();
 
 //Funciones para calcular valor de resistencia por sus bandas de color
-char SeleccionarColor();
+double SeleccionarColor();
+double VoltajeUmbral();
 
-//Se definen variable globales para el cálculo de la ley de Ohm
+//Se definen variables globales para el cálculo de la ley de Ohm
 float R1 = 0, R2 = 0, R3 = 0, R4 = 0, R5 = 0, R6 = 0;
+//Se definen variables globales para el cálculo de resistencia
+double color=0;
+double multiplicador = 0;
+char escala;
+string tol="No Aplica";
+
+double codigo = 0;
+double voltajeUmbral = 0;
+
+
 
 
 //array<float, 6> EstablecerValoresResistencias(void); ---Agregar uso de array
@@ -41,23 +52,29 @@ int main()
     float Resistencia = 0;
 
     //Variables del cálfulo de resistencia por código de colores
-    int ValorResistencia = 0;
-    int PrimerBanda = 0;
-    int SegundaBanda = 0;
-    int TercerBandaMultiplicadora = 0;
-    char escala;
+    double ValorResistencia = 0;
+    double PrimerBanda = 0;
+    double SegundaBanda = 0;
+    double TercerBandaMultiplicadora = 0;
+    char escalaOhms=0;
     string tolerancia;
+    char continuar;
+    
+    //Calculo resoistencia para diodo
+
+    double fuente = 0;
+    double corrienteEsperada = 0;
+    double voltajeDiodo = 0;
+
   
 	
         do {
-            printf("Bienvenido a la calculadora de electrónica :)\n Aquí podrás realizar operaciones para reforzar tus conociemitos en electrónica\n");
-            printf("Selecciona la operación que deseas realizar\n");
+            printf("\n\n           Bienvenido a la calculadora de electrónica :)\n\nAquí podrás realizar operaciones para reforzar tus conociemitos en electrónica\n");
+            printf("Selecciona la operación que deseas realizar\n\n");
             printf("1). Cálculo de circuitos con ley de Ohm\n");
             printf("2). Definir el valor de una resistencia por su código de colores\n");
             printf("3). Definir el valor de la resistencia para un Diodo LED\n");
-            printf("4). Cálculos con capacitores\n");
-            printf("5). Cálculos con inductores\n");
-            printf("6). SALIR\n\n");
+            printf("4). SALIR\n\n");
 
             option = PedirOpcion();
             switch (option)
@@ -66,179 +83,28 @@ int main()
 
             case '1'://Cálculo de circuitos con ley de Ohm
                 //Agregar do-while si se desea salir de la calculadora en cada operación 
-                    printf("Selecciona la operación que deseas realizar\n");
-                    printf("1). Cálculo de circuitos en serie\n");
-                    printf("2). Cálculo de circuitos en paralelo\n\n");
-                    /*FUNCION OPCIONAL: la función scanf permite introducir cualquier combinación de valores numéricos, caracteres sueltos y cadenas de caracteres
-                    a través del teclado. En este caso el argumento es ("%d, &TipoCitcuito") -> %d imprime una variable int en formato decimal,
-                    mientras que se toma una valor por referencia de Tipocircuito*/
-                    //scanf("%d, &TipoCitcuito"); //Esperamos un valor decimal (%d) que se guardará en la variable option (&TipoCitcuito)
-                    
-                    Variante = ElegirVariante();         
-                    switch (Variante)
-                    {
-                    case '1': //Circuito en serie
-                       
-                        printf("Carácteristicas de un circuiuto en serie:\n");   
-                        printf("** La corriente es constante en todos los elementos pasivos\n");
-                        printf("** Hay una caída de tensión en cada elemento\n");
-                        printf("** La suma de las resistencias nos da la resistencia total del circuito\n");
-                        printf("NOTA: Para este cálculo requieres conocer el valor de 2 de las 3 variables (Voltaje, Corriente y Resistencias)\n\n");
-                        printf("¿Qué valores conoces?\n");
-                        printf("1). Voltaje y Corriente\n");
-                        printf("2). Voltaje y Resistencia/s\n");
-                        printf("3). Corriente y Resistencia/s\n\n");
-                       
-                        ValoresConocidosOhm = ElegirValoresConocidos();                     
-                        switch (ValoresConocidosOhm)
-                        {
-                        case '1'://Voltaje y corriente
-                            cout << "Introduce el valor del voltaje (en volts)\n";
-                            cin >> Voltaje;
-                            cout << "Introduce el valor de la Corriente (en amperes)\n";
-                            cin >> Corriente;                           
-                            //LLamamos una función miembro de la clase mediante el objeto miclase
-                           //Para Realizar la Operación
-                            //Resistencia=0;
-                            miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
-                            miClase.ResistenciaTotal(Voltaje, Corriente);
-
-                                break;
-                        case '2'://Voltaje y resistencias
-                            cout << "Introduce el valor del voltaje (en volts)\n";
-                            cin >> Voltaje; 
-                            NResis = DefinirNResistencias(); 
-                            Resistencia = R1 + R2 + R3 + R4 + R5 + R6;
-                            //LLamamos una función miembro de la clase mediante el objeto miclase
-                            //Para Realizar la Operación
-                            miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
-                            miClase.CorrienteTotal(Resistencia, Voltaje);
-                            //Voltaje / (R1 + R2 + R3 + R4 + R5 + R6) << " Amperes\n\n\a";///Aqui se llama función miembro);
-                            break;
-
-                        case '3': //Corriente y resistencias
-                            cout << "Introduce el valor de la Corriente (en amperes)";
-                            cin >> Corriente;                         
-                            NResis = DefinirNResistencias();
-                            Resistencia = R1 + R2 + R3 + R4 + R5 + R6;
-                            //LLamamos una función miembro de la clase mediante el objeto miclase
-                           //Para Realizar la Operación
-                            miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
-                            miClase.VoltajeTotal(Resistencia, Corriente);
-                                break;
-
-                        default:
-                            cout << "Operacion no valida\n";
-                            break;
-                        }
-                    
-                        break;
-
-                    case '2': //Circuito Paralelo
-
-                        printf("Carácteristicas de un circuiuto en Paralelo:\n");
-                        printf("** La corriente es distinta en cada elemento pasivo conectado en paralelo\n");
-                        printf("** El voltaje de alimentación es el mismo en cada elemento\n");
-                        printf("** La resistencia total se calcula por medio de la siguiente expresión:\n\n");
-                        printf("                               1          \n");
-                        printf("Resistencia Total = ----------------------\n");
-                        printf("                       1     1         1  \n");
-                        printf("                      --- + --- ... + --- \n");
-                        printf("                       R1    R2        Rn \n\n");
-                        printf("NOTA: Para este cálculo requieres conocer el valor de 2 de las 3 variables (Voltaje, Corriente y Resistencias)\n\n");
-                        printf("¿Qué valores conoces?\n");
-                        printf("1). Voltaje y Corriente\n");
-                        printf("2). Voltaje y Resistencia/s\n");
-                        printf("3). Corriente y Resistencia/s\n\n");
-
-                        ValoresConocidosOhm = ElegirValoresConocidos();
-                        switch (ValoresConocidosOhm)
-                        {
-                        case '1'://Voltaje y corriente
-                            cout << "Introduce el valor del voltaje (en volts)\n";
-                            cin >> Voltaje;
-                            cout << "Introduce el valor de la Corriente (en amperes)\n";
-                            cin >> Corriente;
-                           
-                            //LLamamos una función miembro de la clase mediante el objeto miclase
-                           //Para Realizar la Operación
-                            miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
-                            miClase.ResistenciaTotal(Voltaje, Corriente);
-                            break;
-                        case '2'://Voltaje y resistencias
-                            cout << "Introduce el valor del voltaje (en volts)\n";
-                            cin >> Voltaje;
-                            NResis = DefinirNResistencias();
-                            Resistencia = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
-                            //LLamamos una función miembro de la clase mediante el objeto miclase
-                           //Para Realizar la Operación
-                            miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
-                            miClase.CorrienteTotal(Resistencia, Voltaje);
-                            break;
-
-                        case '3': //Corriente y resistencias
-                            cout << "Introduce el valor de la Corriente (en amperes)";
-                            cin >> Corriente;
-                            NResis = DefinirNResistencias();
-                            Resistencia = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
-                            //LLamamos una función miembro de la clase mediante el objeto miclase
-                           //Establecemos valores a las variables de Voltaje, Corriente y Resistencia
-                            miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
-                            //Para Realizar la Operación
-                            miClase.VoltajeTotal(Resistencia, Corriente);
-                            break;
-
-                        default:
-                            cout << "Operacion no valida\n";
-                            break;
-                        }
-
-                        break;
-
-                    default:
-                        cout << "Operacion no valida\n";
-                        break;
-
-                    }
-                    printf("RESUMEN FINAL:\n\n");
-                    cout << "**La Corriente Total es: " << miClase.ObtenerI() << " Amperes\a\n" << endl;
-                    cout << "**La Resistencia Total es: " << miClase.ObtenerR() << " Ohms\n" << endl;
-                    cout << "**El Voltaje Total es: " << miClase.ObtenerV() << " Volts\n" << endl;
-            break;
-                   
-
-            case '2'://Definir el valor de una resistencia por su código de colores\n");
                 printf("Selecciona la operación que deseas realizar\n");
-                printf("1). Determinar el valor de una resistencia con 4 bandas.\n");
-                printf("2). Determinar el valor de una resistencia con 5 bandas.\n\n");
+                printf("1). Cálculo de circuitos en serie\n");
+                printf("2). Cálculo de circuitos en paralelo\n\n");
+                /*FUNCION OPCIONAL: la función scanf permite introducir cualquier combinación de valores numéricos, caracteres sueltos y cadenas de caracteres
+                a través del teclado. En este caso el argumento es ("%d, &TipoCitcuito") -> %d imprime una variable int en formato decimal,
+                mientras que se toma una valor por referencia de Tipocircuito*/
+                //scanf("%d, &TipoCitcuito"); //Esperamos un valor decimal (%d) que se guardará en la variable option (&TipoCitcuito)
+
                 Variante = ElegirVariante();
                 switch (Variante)
                 {
-                case '1': //resistencia con 4 bandas
+                case '1': //Circuito en serie
 
-                    printf("A continuación podrás conocer el valor de una resistencia mediante la interpretación de sus bandas de colores:\n");
-                    printf("NOTA: Para obtener un resultado correcto debes orientar tu resistencia de la siguiente manera: \n\n");
-                    printf("** Localiza el extremo donde las bandas de colores se encuentren más juntas \n");
-                    printf("** Una vez localizado, mantén ese estremo a tu izquierda\n");
-                    printf("** Por último es importante que identifiques los colores de izquierda a derecha\n\n");
-                    printf("Para definir un color tendrás que teclear la letra asociada que le corresponde:\n");
-                    printf("**Negro = B\n**Café = N\n**Rojo = R\n**Naranja = O\n**Amarillo = Y\n**Verde = E\n**Azul = U\n");
-                    printf(" **Violeta = V\n **Gris = G\n **Blanco = W\n **Dorado = L\n **Plata = S\n\n");
-
-                     //Primer Banda
-                    cout << "Presiona Enter si entendiste las instrucciones" << endl;
-                    printf("¿Cuál es el color de la primer banda?\n\n");
-                    char SeleccionarColor();
-
-                    printf("¿Cuál es el color de la segunda banda?\n\n");
-                    char SeleccionarColor();
-
-                    printf("¿Cuál es el color de la tercer banda?\n\n");
-                    char SeleccionarColor();
-
-                    printf("¿Cuál es el color de la cuarta banda?\n\n");
-                    char SeleccionarColor();
-
+                    printf("Carácteristicas de un circuiuto en serie:\n");
+                    printf("** La corriente es constante en todos los elementos pasivos\n");
+                    printf("** Hay una caída de tensión en cada elemento\n");
+                    printf("** La suma de las resistencias nos da la resistencia total del circuito\n");
+                    printf("NOTA: Para este cálculo requieres conocer el valor de 2 de las 3 variables (Voltaje, Corriente y Resistencias)\n\n");
+                    printf("¿Qué valores conoces?\n");
+                    printf("1). Voltaje y Corriente\n");
+                    printf("2). Voltaje y Resistencia/s\n");
+                    printf("3). Corriente y Resistencia/s\n\n");
 
                     ValoresConocidosOhm = ElegirValoresConocidos();
                     switch (ValoresConocidosOhm)
@@ -266,6 +132,18 @@ int main()
                         miClase.CorrienteTotal(Resistencia, Voltaje);
                         //Voltaje / (R1 + R2 + R3 + R4 + R5 + R6) << " Amperes\n\n\a";///Aqui se llama función miembro);
                         break;
+
+                    case '3': //Corriente y resistencias
+                        cout << "Introduce el valor de la Corriente (en amperes)";
+                        cin >> Corriente;
+                        NResis = DefinirNResistencias();
+                        Resistencia = R1 + R2 + R3 + R4 + R5 + R6;
+                        //LLamamos una función miembro de la clase mediante el objeto miclase
+                       //Para Realizar la Operación
+                        miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
+                        miClase.VoltajeTotal(Resistencia, Corriente);
+                        break;
+
                     default:
                         cout << "Operacion no valida\n";
                         break;
@@ -273,31 +151,183 @@ int main()
 
                     break;
 
-                case '2': //resistencia con 5 bandas
+                case '2': //Circuito Paralelo
 
-                    break;
+                    printf("Carácteristicas de un circuiuto en Paralelo:\n");
+                    printf("** La corriente es distinta en cada elemento pasivo conectado en paralelo\n");
+                    printf("** El voltaje de alimentación es el mismo en cada elemento\n");
+                    printf("** La resistencia total se calcula por medio de la siguiente expresión:\n\n");
+                    printf("                               1          \n");
+                    printf("Resistencia Total = ----------------------\n");
+                    printf("                       1     1         1  \n");
+                    printf("                      --- + --- ... + --- \n");
+                    printf("                       R1    R2        Rn \n\n");
+                    printf("NOTA: Para este cálculo requieres conocer el valor de 2 de las 3 variables (Voltaje, Corriente y Resistencias)\n\n");
+                    printf("¿Qué valores conoces?\n");
+                    printf("1). Voltaje y Corriente\n");
+                    printf("2). Voltaje y Resistencias\n");
+                    printf("3). Corriente y Resistencias\n\n");
+
+                    ValoresConocidosOhm = ElegirValoresConocidos();
+                    switch (ValoresConocidosOhm)
+                    {
+                    case '1'://Voltaje y corriente
+                        cout << "Introduce el valor del voltaje (en volts)\n";
+                        cin >> Voltaje;
+                        cout << "Introduce el valor de la Corriente (en amperes)\n";
+                        cin >> Corriente;
+
+                        //LLamamos una función miembro de la clase mediante el objeto miclase
+                       //Para Realizar la Operación
+                        miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
+                        miClase.ResistenciaTotal(Voltaje, Corriente);
+                        break;
+                    case '2'://Voltaje y resistencias
+                        cout << "Introduce el valor del voltaje (en volts)\n";
+                        cin >> Voltaje;
+                        NResis = DefinirNResistencias();
+                        Resistencia = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
+                        //LLamamos una función miembro de la clase mediante el objeto miclase
+                       //Para Realizar la Operación
+                        miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
+                        miClase.CorrienteTotal(Resistencia, Voltaje);
+                        break;
+
+                    case '3': //Corriente y resistencias
+                        cout << "Introduce el valor de la Corriente (en amperes)";
+                        cin >> Corriente;
+                        NResis = DefinirNResistencias();
+                        Resistencia = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
+                        //LLamamos una función miembro de la clase mediante el objeto miclase
+                       //Establecemos valores a las variables de Voltaje, Corriente y Resistencia
+                        miClase.EstablecerValoresVRI(Voltaje, Corriente, Resistencia);
+                        //Para Realizar la Operación
+                        miClase.VoltajeTotal(Resistencia, Corriente);
+                        break;
+
+                    default:
+                        cout << "Operacion no valida\n";
+                        break;
                     }
 
-                 printf("RESUMEN FINAL:\n\n");
-                 cout << "**La Corriente Total es: " << miClase.ObtenerI() << " Amperes\a\n" << endl;
-                 cout << "**La Resistencia Total es: " << miClase.ObtenerR() << " Ohms\n" << endl;
-                 cout << "**El Voltaje Total es: " << miClase.ObtenerV() << " Volts\n" << endl;
-                 break;
+                    break;
+
+                default:
+                    cout << "Operacion no valida\n";
+                    break;
+
+                }
+                printf("\nRESUMEN FINAL:\n\a");
+
+                if (miClase.ObtenerR() == 0) {
+                    printf("El valor de resistencia introducido NO ES VÁLIDO, esto pasa cuando:\n\n");
+                    printf("1) Otorgaste valor 0 a la resistencia durante el cálculo de circuitos en serie\n");
+                    printf("SOLUCIÓN: Introduce un valor diferente a cero\n\n");
+
+                    printf("2) Seleccionaste que cuentas con una resistencia en tu circuito paralelo.\n");
+                    printf("Recuerda que si tienes solo una resistencia en tu circuito, su configuración es equivalente a un circuto serie\n");
+                    printf("SOLUCIÓN: Seleciona la opción para calcular circuitos en serie e introduce el valor de tu única resistencia\n");
+                }
+                else {
+                    cout << "**La Corriente Total es: " << miClase.ObtenerI() << " Amperes\n" << endl;
+                    cout << "**La Resistencia Total es: " << miClase.ObtenerR() << " Ohms\n" << endl;
+                    cout << "**El Voltaje Total es: " << miClase.ObtenerV() << " Volts\n" << endl;
+                }
+                break;
 
 
+            case '2'://Definir el valor de una resistencia por su código de colores\n");
+                printf("Selecciona la operación que deseas realizar\n");
+                printf("1). Determinar el valor de una resistencia con 4 bandas.\n");
+                Variante = ElegirVariante();
+                switch (Variante)
+                {
+                case '1': //resistencia con 4 bandas
+
+                    printf("A continuación podrás conocer el valor de una resistencia mediante la interpretación de sus bandas de colores:\n");
+                    printf("NOTA: Para obtener un resultado correcto debes orientar tu resistencia de la siguiente manera: \n\n");
+                    printf("** Localiza el extremo donde las bandas de colores se encuentren más juntas \n");
+                    printf("** Una vez localizado, mantén ese estremo a tu izquierda\n");
+                    printf("** Por último es importante que identifiques los colores de izquierda a derecha\n\n");
+                    printf("Para definir un color tendrás que introducir el número asociado que le corresponde:\n");
+                    printf("**Negro = 0\n**Café = 1\n**Rojo = 2\n**Naranja = 3\n**Amarillo = 4\n**Verde = 5\n**Azul = 6\n");
+                    printf("**Violeta = 7\n**Gris = 8\n**Blanco = 9\n**Dorado = 10\n**Plata = 11\n");
+
+                    //Primer Banda
+                    cout << "Para iniciar introduce cualquier tecla y presiona Enter" << endl;
+                    cin >> continuar;
+
+                    cout << "Primer Banda: " << endl;
+                    color = SeleccionarColor();
+                    PrimerBanda = color;
+
+                    cout << "Segunda Banda: " << endl;
+                    color = SeleccionarColor();
+                    SegundaBanda = color;
+
+                    cout << "Tercer Banda: " << endl;
+                    color = SeleccionarColor();
+                    escalaOhms = escala;
+                    TercerBandaMultiplicadora = multiplicador;
+                    /////////////
+                    miClase.EstablecerEscala(escalaOhms);
+                    miClase.EstablecerValoresDeBanda(PrimerBanda, SegundaBanda, TercerBandaMultiplicadora);
+                    miClase.ValorDeResistencia(PrimerBanda, SegundaBanda, TercerBandaMultiplicadora);
+                    /////////////
+                    cout << "Cuarta Banda: " << endl;
+                    color = SeleccionarColor();
+                    tolerancia = tol;///////////
+
+                    /////////////
+                    miClase.EstablecerValorTolerancia(tolerancia);
+                    ////////////
+                    break;
+                }
+
+                
+                printf("\n\nRESUMEN FINAL:\n\a");
+
+                if (miClase.ObtenerValorResistencia() == 0) {
+                    cout << "La Resistencia no existe" << endl;
+                }
+                else {
+                    cout << "**El valor de la Resistencia es: " << miClase.ObtenerValorResistencia() << " " << miClase.ObtenerEscala() << "Ohms\a" << endl;
+                    cout << "  Con una toletancia de: " << miClase.ObtenerTolerancia() << "\a\n" << endl;
+                }
+            
                 
             case '3'://Definir el valor de la resistencia para un Diodo LED
+                printf("\nA continuación podrás calcular el valor de la resistencia necesario para que un Diodo LED opere correctamente\n");
+                printf("Para lo anterior necesitarás introducir el valor de tu fuente de alimentación, la corriente esperada y el color de tu LED\n");
+                 
+                cout << "Introduce el valor de tu fuentte de alimentación (en volts):\n";
+                cin >> fuente;
+                miClase.EstablecerValorDeFuente(fuente);
 
-             
-                break;
-            case '4'://Cálculos con capacitores
+                cout<< "Introduce el valor de la corriente esperada (en amperes):\n";
+                cin >> corrienteEsperada;
+                miClase.EstablecerValorDeCorrienteDelCircuito(corrienteEsperada);
 
+                cout << "Introduce el color de tu LED:\n";
+                cout << "Considera el siguiente código de colores:\n" << endl;
+                printf("**Rojo = 0\n**Amarillo = 1\n**Naranja = 2\n**Verde = 3\n**Azul = 4\n**Blanco = \n\n");
+                codigo = VoltajeUmbral();
+                voltajeDiodo = voltajeUmbral;
+
+                miClase.EstablecerVoltajeDiodo(voltajeDiodo);
+                ///
+                miClase.CalculoVoltajeResistencia(fuente, voltajeDiodo);
+                miClase.ResistenciaSugerida(miClase.ObtenerVoltajeResistencia(), corrienteEsperada);
+                ///
+                printf("\n\nRESULTADO:\n\a");
+                cout << "El valor de la resistencia sugerida es: " << miClase.ObtenerValorResistenciaSugerida() << " " << "Ohms\n" << endl;
                 
-                break;
-            case '5': // Cálculos con inductores
+                
+         
+
      
                 break;
-            case '6': //SALIR
+            case '4': //SALIR
                 break;
                 // Si ninguno de los casos anteriores se cumplió, entonces realiza lo siguiente
             default:
@@ -323,7 +353,7 @@ int main()
         do {
             cout << "Digita el número de la operación: ";
             cin >> option;
-        } while (option != '1' && option != '2' && option != '3' && option != '4' && option != '5' && option != '6' && option != '7' && option != '8');
+        } while (option != '1' && option != '2' && option != '3' && option != '4');
         return option;
     }
 
@@ -333,7 +363,7 @@ int main()
         do {
             cout << "Digita el número de la operación: ";
             cin >> Variante;
-        } while (Variante != '1' && Variante != '2' );
+        } while (Variante != '1');
         return Variante;
     }
    
@@ -352,9 +382,9 @@ int main()
         char NResis;
         do {
             printf("Introduce el valor de las resistencias (en ohms)\n");
-            printf( "¿Cuántas resistencias tiene tu circuito¨?\n  Respuesta: ");
+            printf("¿Cuántas resistencias tiene tu circuito¨?\n  Respuesta: ");
             cin >> NResis;
-           
+
         } while (NResis != '1' && NResis != '2' && NResis != '3' && NResis != '4' && NResis != '5' && NResis != '6');
         if (NResis == '1') {
             cout << "Valor resistencia 1: ";
@@ -415,86 +445,149 @@ int main()
 
 
     //CÁLCULO DE RESISTENCIA POR CÓDIGO DE COLORES
+  
 
-    char SeleccionarColor()
+    double SeleccionarColor()
+
     {
-        int Negro = 0;
-        int Cafe = 1;
-        int Rojo = 2;
-        int Naranja = 3;
-        int Amarillo = 4;
-        int Verde = 5;
-        int Azul = 6;
-        int Violeta = 7;
-        int Gris = 8;
-        int Blanco = 9;
-        int Dorado = 0;
-        int Plata = 0;
-        char color;
+        double Negro = 0;
+        double Cafe = 1;
+        double Rojo = 2;
+        double Naranja = 3;
+        double Amarillo = 4;
+        double Verde = 5;
+        double Azul = 6;
+        double Violeta = 7;
+        double Gris = 8;
+        double Blanco = 9;
+        double Dorado = 0;
+        double Plata = 0;
+        char kilos = 'K';
+        char megas = 'M';
+        double m1 = 0.01;
+        double m2 = 0.1;
+        double m3 = 1;
+        double m4 = 10;
+        double m5 = 100;
+       
 
-        cout << "Teclea el código correspondiente:";
+        do {
+            cout << "¿Cuál es el color de la banda?\n";
             cin >> color;
+        } while (color != 0 && color != 1 && color != 2 && color != 3 && color != 4 && color != 5 && color != 6 && color != 7 && color != 8 && color != 9 && color != 10 && color != 11);
         
-            if (color == 'B') {
+            if (color == 0) {
                 color = Negro;
+                multiplicador = m3;
+                tol = "No Aplica";
+
         }
-            else if (color == 'N') {
+            else if (color == 1) {
                 color = Cafe;
+                multiplicador = m4;
+                tol = "1% (F)";
             }
-            else if (color == 'R') {
+            else if (color == 2) {
                 color = Rojo;
+                multiplicador = m5;
+                tol = "±2% (G)";
             }
-            else if (color == 'O') {
+            else if (color == 3) {
                 color = Naranja;
+                multiplicador=m3;
+                escala = kilos;
+                tol = "No Aplica";
+
+
             }
-            else if (color == 'Y') {
+            else if (color == 4) {
                 color = Amarillo;
+                multiplicador = m4;
+                escala = kilos;
+                tol = "No Aplica";
+
             }
-            else if (color == 'E') {
+            else if (color == 5) {
                 color = Verde;
+                multiplicador = m5;
+                escala = kilos;
+                tol = "±5% (D)";
             }
-            else if (color == 'U') {
+            else if (color == 6) {
                 color = Azul;
+                multiplicador = m3;
+                escala = megas;
+                tol = "±0.25% (C)";
             }
-            else if (color == 'V') {
+            else if (color == 7) {
                 color = Violeta;
+                multiplicador = m4;
+                escala = megas;
+                tol = "±0.10% (B)";
             }
-            else if (color == 'G') {
+            else if (color == 8) {
                 color = Gris;
+                multiplicador = 0;
+                tol = "±0.05%";
             }
-            else if (color == 'W') {
+            else if (color == 9) {
                 color = Blanco;
+                multiplicador = 0;
+                tol = "No Aplica";
             }
-            else if (color == 'L') {
+            else if (color == 10) {
                 color = Dorado;
+                multiplicador = m2;
+                tol = "±5%";
             }
-            else if (color == 'S') {
+            else if (color == 11) {
                 color = Plata;
+                multiplicador = m3;
+                tol = "±10%";
             }
 
         return color;
     }
 
-  
+    //DIODO LED
 
-  /*  array<float, 6> EstablecerValoresResistencias() //La funcion LlenarArreglo consiste en el llenado de un arreglo con 3 posiciones
+    double VoltajeUmbral()
+
     {
-        array<float, 6> Arreglo = { 0 }; //primeramente se inicializa el arreglo a llenar llamado "Arreglo"
-        for (int i = 0; i < 6; i++) { //Posteriormente se hace una iteración con la fucnión for desde la posición i= 0 hasta LEN
-            cout << "Valor Elemento [" << i << "]: "; // Se imprime en pantalla los valores que fue tomando i mientras se ejecutó la iteración
-            cin >> Arreglo[i];// Se guardan los valores en el Arreglo
-        }
-        return Arreglo;
+
+
+    do {
+        cout << "¿Cuál es el color del LED?\n";
+        cin >> codigo;
+    } while (codigo != 0 && codigo != 1 && codigo != 2 && codigo != 3 && codigo != 4 && codigo != 5);
+
+    if (codigo == 0) {
+        voltajeUmbral = 1.9;
+        
+
     }
+    else if (codigo == 1) {
+        voltajeUmbral = 1.7;
+
+    }
+    else if (codigo == 2) {
+        voltajeUmbral = 2.4;
+
+    }
+    else if (codigo == 3) {
+        voltajeUmbral = 2.4;
 
 
-    //void EstablecerValoresResistencias();
 
-   
+    }
+    else if (codigo == 4) {
+        voltajeUmbral = 3.4;
 
-	//Operaciones:
-Ley de Ohm
-	void OperacionesDeCalculadora::MostrarInfoLeyOhm() const
 
-		cout << "La ley de Ohm establece la relación entre el voltaje. la corriente y la resistencia de un\n" << "circuito electrónico"
-        */
+    }
+    else if (codigo == 5) {
+        voltajeUmbral = 3.4;
+
+    }
+    return codigo;
+    }

@@ -1,6 +1,6 @@
 /*
 *Authors: Martín Morales Trejo and Gabriel Peytral Borja
-*e-mail: martin.mo.tre@comunidad.unam.mx
+*e-mail: martin.mo.tre@comunidad.unam.mx//Gabrielpeytral@comunidad.unam.mx
 *Oct 18, 2021
  Definición de las funciones miembro de la clase OperacionesDeCalculadora. Este archivo contiene
  implementaciones de las funciones miembreo (atributos) cuyo prototipo está
@@ -39,7 +39,7 @@ float OperacionesDeCalculadora::ObtenerI() {
 		}
 //Definición de funciones para el cálculo de resistencias por código de colores
 
-void OperacionesDeCalculadora::EstablecerValoresDeBanda(int primer, int segunda, int tercera) {//Función para darle el valor a las variables
+void OperacionesDeCalculadora::EstablecerValoresDeBanda(double primer, double segunda, double tercera) {//Función para darle el valor a las variables
 	PrimerBanda = primer;
 	SegundaBanda = segunda;
 	TercerBandaMultiplicadora = tercera;	
@@ -47,11 +47,11 @@ void OperacionesDeCalculadora::EstablecerValoresDeBanda(int primer, int segunda,
 void OperacionesDeCalculadora::EstablecerValorTolerancia(string tolerancia) {
 	Tolerancia = tolerancia;
 }
-void OperacionesDeCalculadora::EstablecerEscala(char escala) {
-	Escala = escala;
+void OperacionesDeCalculadora::EstablecerEscala(char escalaOhms) {
+	Escala = escalaOhms;
 }
-void OperacionesDeCalculadora::ValorDeResistencia(int primer, int segunda, int tercera){
-	ValorResistencia = (10 * primer + segunda) * tercera;
+void OperacionesDeCalculadora::ValorDeResistencia(double primer, double segunda, double tercera){
+	ValorResistencia = ((10 * primer + segunda) * tercera);
 }
 int OperacionesDeCalculadora::ObtenerValorResistencia() {
 	return ValorResistencia;
@@ -64,10 +64,37 @@ string OperacionesDeCalculadora::ObtenerTolerancia() {
 }
 
 		//Definir valor de resistenica para Diodo LED
+double OperacionesDeCalculadora::ObtenerVoltajeResistencia() {
+	return VoltajeResistencia;
+}
 
-		//Cálculos con capacitores
+double OperacionesDeCalculadora::ObtenerValorDeFuente() {
+	return Fuente;
+}
+double OperacionesDeCalculadora::ObtenerValorDeCorrienteDelCircuito() {
+	return CorrienteEsperada;
+}
+double OperacionesDeCalculadora::ObtenerValorDeVoltajeLED() {
+	return VoltajeDiodo;
+}
+double OperacionesDeCalculadora::ObtenerValorResistenciaSugerida() {
+	return ResistenciaSugeridaLED;
+}
+void OperacionesDeCalculadora::EstablecerValorDeFuente(double fuente) {
+	Fuente = fuente;
+}
 
-		//Cálculos con inductores
+void OperacionesDeCalculadora::EstablecerValorDeCorrienteDelCircuito(double corrienteEsperada) {
+	CorrienteEsperada = corrienteEsperada;
+}
+void OperacionesDeCalculadora::EstablecerVoltajeDiodo(double voltajeDiodo) {
+	VoltajeDiodo = voltajeDiodo;
+}
+void OperacionesDeCalculadora::CalculoVoltajeResistencia(double fuente, double voltajeDiodo) {
+	VoltajeResistencia = (fuente-voltajeDiodo);
+}
 
-		
-
+void OperacionesDeCalculadora::ResistenciaSugerida(double VoltajeResistencia, double corrienteEsperada) {
+	ResistenciaSugeridaLED = (VoltajeResistencia / corrienteEsperada);
+}
+	
