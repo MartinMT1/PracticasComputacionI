@@ -20,13 +20,14 @@ class OperacionesDeCalculadora {
 public:										
 		//Operaciones:
 	//Ley de Ohm
-	void EstablecerValoresVRI(float v, float i, float r); //Función para darle el valor a las variables de VRI
+	void EstablecerValoresVRI(float Voltaje, float Resistencia, float Corriente); //Función para darle el valor a las variables de VRI
 	void ResistenciaTotal(float Voltaje, float Corriente);
 	void VoltajeTotal(float Resistencia, float Corriente);
 	void CorrienteTotal(float Resistencia, float Voltaje);
 	float ObtenerV();
 	float ObtenerR();
 	float ObtenerI();
+
 
 	//Valor de resistencias por código de colores
 	void EstablecerValoresDeBanda(double primer, double segunda, double tercera); //Función para darle el valor a las variables
@@ -67,6 +68,7 @@ private:
 		float V = 0;
 		float R = 0;
 		float I = 0;
+
 		//Valor de resistencias por bandas de colores
 		double ValorResistencia = 0;
 		double PrimerBanda = 0;

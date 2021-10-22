@@ -7,26 +7,27 @@
  en CalculadoraDeElectronica.h
 */
 
-//Para usar las definiciones descritas brevemente en la clase Puntos 2D
+//Para usar las definiciones descritas brevemente en la clase CalculadoraDeElectronica
 #include <iostream>
 #include "CalculadoraDeElectronica.h"
 
 using namespace std;
 
 //Definición de funciones para Ley de Ohm
-void OperacionesDeCalculadora::EstablecerValoresVRI(float v, float i,float r) {
-	V = v;
-	R = r;
-	I = i;
+
+void OperacionesDeCalculadora::EstablecerValoresVRI(float Voltaje, float Resistencia,float Corriente) {
+	V = Voltaje;
+	R = Resistencia;
+	I = Corriente;
+} 
+void OperacionesDeCalculadora::ResistenciaTotal(float V, float I) {
+	R = V / I;
 }
-void OperacionesDeCalculadora::ResistenciaTotal(float Voltaje, float Corriente) {
-	R = Voltaje / Corriente;
-}
-void OperacionesDeCalculadora::VoltajeTotal(float Resistencia, float Corriente) {
-	V = Resistencia * Corriente;
+void OperacionesDeCalculadora::VoltajeTotal(float R, float I) {
+	V = R * I;
 		}
-void OperacionesDeCalculadora::CorrienteTotal(float Resistencia, float Voltaje) {
-	I = Voltaje / Resistencia;
+void OperacionesDeCalculadora::CorrienteTotal(float R, float V) {
+	I = V / R;
 		}
 	float OperacionesDeCalculadora::ObtenerV() {
 	return V;
@@ -37,6 +38,7 @@ float OperacionesDeCalculadora::ObtenerR() {
 float OperacionesDeCalculadora::ObtenerI() {
 	return I;
 		}
+
 //Definición de funciones para el cálculo de resistencias por código de colores
 
 void OperacionesDeCalculadora::EstablecerValoresDeBanda(double primer, double segunda, double tercera) {//Función para darle el valor a las variables
