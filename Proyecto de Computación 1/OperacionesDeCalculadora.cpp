@@ -55,7 +55,7 @@ void OperacionesDeCalculadora::EstablecerEscala(char escalaOhms) {
 void OperacionesDeCalculadora::ValorDeResistencia(double primer, double segunda, double tercera){
 	ValorResistencia = ((10 * primer + segunda) * tercera);
 }
-int OperacionesDeCalculadora::ObtenerValorResistencia() {
+double OperacionesDeCalculadora::ObtenerValorResistencia() {
 	return ValorResistencia;
 }
 char OperacionesDeCalculadora::ObtenerEscala() {
@@ -100,3 +100,48 @@ void OperacionesDeCalculadora::ResistenciaSugerida(double VoltajeResistencia, do
 	ResistenciaSugeridaLED = (VoltajeResistencia / corrienteEsperada);
 }
 	
+
+//Calculadora de Capacitores
+void OperacionesDeCalculadora::EstablecerCapacitanciaTotal(double capacitancia) {
+	Capacitancia = capacitancia;
+}
+void OperacionesDeCalculadora::EstablecerValoresVCCe(float Voltaje, double capacitancia, double cargaElectrica) {
+	V = Voltaje;
+	Capacitancia = capacitancia;
+	CargaElectrica = cargaElectrica;
+}
+void OperacionesDeCalculadora::CargaTotal(float V, double Capacitancia) {
+	CargaElectrica = Capacitancia * V;
+}
+void OperacionesDeCalculadora::CapacitanciaEnCircuito(double CargaElectrica,float V) {
+	Capacitancia = CargaElectrica / V;
+}
+void OperacionesDeCalculadora::VoltajeEnCapacitores(double Capacitancia,double CargaElectrica) {
+	V= CargaElectrica / Capacitancia;
+}
+double OperacionesDeCalculadora::ObtenerCargaElectrica() {
+	return CargaElectrica;
+}
+void OperacionesDeCalculadora::EstablecerCyR(double capacitancia, float Resistencia) {
+	Capacitancia=capacitancia;
+	R = Resistencia;
+}
+double OperacionesDeCalculadora::ObtenerCapacitancia() {
+	return Capacitancia;
+	}
+void OperacionesDeCalculadora::CalculoTiempo() {
+	TiempoDeCarga = (Capacitancia) * (R);
+	}
+double OperacionesDeCalculadora::ObtenerTiempoCarga() {
+	return TiempoDeCarga;
+	}
+
+//Cálculos con Inductores
+void OperacionesDeCalculadora::EstablecerInductanciaTotal(double inductancia) {
+	Inductancia = inductancia;
+}
+double OperacionesDeCalculadora::ObtenerInductancia() {
+	return Inductancia;
+}
+
+

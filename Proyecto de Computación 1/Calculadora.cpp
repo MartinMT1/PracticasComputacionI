@@ -19,10 +19,20 @@ void EstablecerValoresResistencias();
 double SeleccionarColor();
 double VoltajeUmbral();
 
+//Funciones para calculos con capacitores
+char    DefinirNCapacitores();
+
+//Funciones para calculos con capacitores
+char DefinirNInductores();
+
 //Se definen variables globales para el cálculo de la ley de Ohm
 float R1 = 0, R2 = 0, R3 = 0, R4 = 0, R5 = 0, R6 = 0;
 float Rserie = 0;
 float Rparalelo = 0;
+float Cserie = 0;
+float Cparalelo = 0;
+float Iserie = 0;
+float Iparalelo = 0;
 
 //Se definen variables globales 
 double color=0;
@@ -43,7 +53,7 @@ int main()
     char NResis;
     char option;
     char Variante;
-    char ValoresConocidosOhm;
+    char ValoresConocidos3;
     float Voltaje = 1;
     float Corriente = 1;
     float Resistencia=1;
@@ -65,6 +75,15 @@ int main()
     double corrienteEsperada = 0;
     double voltajeDiodo = 0;
 
+    //Capacitores
+    float cargaElectrica = 0;
+    double capacitancia = 0;
+    char   NCapacitores;
+
+    //Inductores
+    double inductancia = 0;
+    char NInductores;
+
   
 	
         do {
@@ -73,7 +92,9 @@ int main()
             printf("1). Cálculo de circuitos con ley de Ohm\n");
             printf("2). Definir el valor de una resistencia por su código de colores\n");
             printf("3). Definir el valor de la resistencia para un Diodo LED\n");
-            printf("4). SALIR\n\n");
+            printf("4). Cálculos con capacitores\n");
+            printf("5). Cálculos con inductores\n");
+            printf("6). SALIR\n\n");
 
             option = PedirOpcion();
             switch (option)
@@ -105,8 +126,8 @@ int main()
                     printf("2). Voltaje y Resistencia/s\n");
                     printf("3). Corriente y Resistencia/s\n\n");
 
-                    ValoresConocidosOhm = ElegirValoresConocidos();
-                    switch (ValoresConocidosOhm)
+                    ValoresConocidos3 = ElegirValoresConocidos();
+                    switch (ValoresConocidos3)
                     {
                     case '1'://Voltaje y corriente
                         cout << "Introduce el valor del voltaje (en volts)\n";
@@ -165,8 +186,8 @@ int main()
                     printf("2). Voltaje y Resistencias\n");
                     printf("3). Corriente y Resistencias\n\n");
 
-                    ValoresConocidosOhm = ElegirValoresConocidos();
-                    switch (ValoresConocidosOhm)
+                    ValoresConocidos3 = ElegirValoresConocidos();
+                    switch (ValoresConocidos3)
                     {
                     case '1'://Voltaje y corriente
                         cout << "Introduce el valor del voltaje (en volts)\n";
@@ -345,7 +366,295 @@ int main()
               
                 break;
 
-            case '4': //SALIR
+            case '4': //Capacitores
+
+                printf("Selecciona la operación\n\n");
+                printf("1). Calculadora de capacitancia total en circuitos serie y paralelo.\n\n");
+                printf("2). Calculadora de Carga eléctrica (Q), Voltaje (V) y Capacitancia (C).\n\n");
+                printf("3). Calculadora de tiempo de carga.\n\n");
+
+
+               ValoresConocidos3 = ElegirValoresConocidos();
+               switch (ValoresConocidos3)
+               {
+               case '1'://Capacitores en serie y paralelo
+                   printf("Selecciona la operación que deseas realizar\n\n");
+                   printf("1). Cálculo de circuitos en serie\n");
+                   printf("2). Cálculo de circuitos en paralelo\n\n");
+                   
+                   Variante = ElegirVariante();
+                   switch (Variante)
+                   {
+                   case '1': //Circuito en serie
+
+                    
+                       printf("A continuación ingresarás el número de capacitores que tiene tu circuito equivalente\n\n");
+                     
+
+                           NCapacitores = DefinirNCapacitores();
+                           capacitancia = Cserie;
+                           //LLamamos una función miembro de la clase mediante el objeto miclase
+                           //Para Realizar la Operación
+                           miClase.EstablecerCapacitanciaTotal(capacitancia);
+                          
+                          
+                       break;
+
+                   case '2': //Circuito Paralelo
+
+                           printf("A continuación ingresarás el número de capacitores que tiene tu circuito equivalente\n\n");
+
+                           NCapacitores = DefinirNCapacitores();
+                           capacitancia = Cparalelo;
+                           omitir = 1;
+                           //LLamamos una función miembro de la clase mediante el objeto miclase
+                           miClase.EstablecerCapacitanciaTotal(capacitancia);
+                       break;
+
+                   default:
+                       cout << "Operacion no valida\n";
+                       break;
+
+                   }
+                   printf("\nRESUMEN FINAL:\n\a");
+
+
+
+                   if ((Cserie == R1) && (omitir == 1)) {
+                       printf("** Seleccionaste que cuentas con un solo capacitor en tu circuito serie.\n\a");
+                       printf("Recuerda que si solo tienes un capacitor en tu circuito, la capacitancia toral es la misma\n");
+                       
+                       printf("Reinicia la calculadora y vulve a intentarlo :)\n\n\n\n");
+                       exit(0);
+
+                   }
+
+                   else {
+                       cout << "**La Capacitancia total es: " << miClase.ObtenerCapacitancia() << " Faradios\n\n\n\n" << endl;
+                   }
+                   break;
+
+               case '2'://Capacitancia,voltaje y carga total
+                   printf("A continuación podrás calcular la capacitancia, voltaje y carga electrica totales de un circuito, para hacerlo\n");
+                   printf("necesitarás dos de los tres datos\n");
+                   printf("¿Qué valores conoces?\n");
+                   printf("1). Voltaje y Capacitancia\n");
+                   printf("2). Voltaje y Carga eléctrica\n");
+                   printf("3). Carga eléctrica y Capacitancia\n\n");
+
+                   ValoresConocidos3 = ElegirValoresConocidos();
+                   switch (ValoresConocidos3)
+                   {
+                   case '1'://V y C
+                       cout << "Introduce el valor del voltaje (en volts)\n";
+                       cin >> Voltaje;
+                       cout << "Introduce el valor de la Capacitancia (en Faradios)\n";
+                       cin >> capacitancia;
+                       //LLamamos una función miembro de la clase mediante el objeto miclase
+                      //Para Realizar la Operación
+                       miClase.EstablecerValoresVCCe(Voltaje, capacitancia, cargaElectrica);
+                       miClase.CargaTotal(miClase.ObtenerV(), miClase.ObtenerCapacitancia());
+
+                       break;
+                   case '2'://V y Q
+                       cout << "Introduce el valor del voltaje (en volts)\n";
+                       cin >> Voltaje;
+                       cout << "Introduce el valor de la Carga eléctrica (en coulombs)\n";
+                       cin >> cargaElectrica;
+                       //LLamamos una función miembro de la clase mediante el objeto miclase
+                       //Para Realizar la Operación
+                       miClase.EstablecerValoresVCCe(Voltaje, capacitancia, cargaElectrica);
+                       miClase.CapacitanciaEnCircuito(miClase.ObtenerCargaElectrica(), miClase.ObtenerV());
+                       break;
+
+                   case '3': //C y Q
+                       cout << "Introduce el valor de la Capacitancia (en Faradios)\n";
+                       cin >> capacitancia;
+                       cout << "Introduce el valor de la Carga eléctrica (en coulombs)\n";
+                       cin >> cargaElectrica;
+                       //LLamamos una función miembro de la clase mediante el objeto miclase
+                       //Para Realizar la Operación
+                       miClase.EstablecerValoresVCCe(Voltaje, capacitancia, cargaElectrica);
+                       miClase.VoltajeEnCapacitores(miClase.ObtenerCargaElectrica(), miClase.ObtenerCapacitancia());
+                       break;
+
+                   default:
+                       cout << "Operacion no valida\n";
+                       break;
+                   }
+                   printf("\nRESUMEN FINAL:\n\a");
+
+
+                   cout << "**La Capacitancia Total es: " << miClase.ObtenerCapacitancia() << " Faradios\n" << endl;
+                   cout << "**La Carga Eléctrica Total es: " << miClase.ObtenerCargaElectrica() << " Couloums\n" << endl;
+                   cout << "**El Voltaje Total es: " << miClase.ObtenerV() << " Volts\n\n\n\n" << endl;
+
+                   break;
+
+               case '3':
+                   printf("Para el calculo del tiempo que tarda en cargar un capacitor, es necesario que cuentes con:\n");
+                   printf("1). La Capacitancia en Faradios\n");
+                   printf("2). La Resistencia tortal en ohms (puedes emplear alguna de las opciones de la calculadora para calcularla)\n\n");
+
+
+                   cout << "Introduce el valor de la capacitancia de tu capacitor electrólitico o cerámico (en Faradios):\n";
+                   cin >> capacitancia;
+                   //miClase.EstablecerValorDeFuente(fuente);
+
+                   cout << "Introduce el valor de la Resistencia (en ohms):\n";
+                   cin >> Resistencia;
+                   miClase.EstablecerCyR(capacitancia, Resistencia);
+                   miClase.CalculoTiempo();
+
+
+                   printf("\n\nRESULTADO:\n\a");
+                   cout << "El tiempo que tarda en cargarse el capacitor es de " << miClase.ObtenerTiempoCarga() << " " << "Segundos\n\n\n\n" << endl;
+
+                   break;
+                }
+                break;
+            case '5': //INDUCTORES
+
+                printf("Selecciona la operación\n\n");
+                printf("1). Calculadora de inductancia total en circuitos serie y paralelo.\n\n");
+                printf("2). Calculadora de Corriente, Voltaje y Reactancia Inductiva.\n\n");
+
+
+                Variante = ElegirVariante();
+                switch (Variante)
+                {
+                case '1'://Capacitores en serie y paralelo
+                    printf("Selecciona la operación que deseas realizar\n\n");
+                    printf("1). Cálculo de circuitos en serie\n");
+                    printf("2). Cálculo de circuitos en paralelo\n\n");
+
+                    Variante = ElegirVariante();
+                    switch (Variante)
+                    {
+                    case '1': //Circuito en serie
+
+
+                        printf("A continuación ingresarás el número de inductores que tiene tu circuito equivalente\n\n");
+
+
+                        NInductores = DefinirNInductores();
+                        inductancia = Iserie;
+                        //LLamamos una función miembro de la clase mediante el objeto miclase
+                        //Para Realizar la Operación
+                        miClase.EstablecerInductanciaTotal(inductancia);
+
+
+                        break;
+
+                    case '2': //Circuito Paralelo
+
+                        printf("A continuación ingresarás el número de capacitores que tiene tu circuito equivalente\n\n");
+
+                        NInductores = DefinirNInductores();
+                        inductancia = Iparalelo;
+                        omitir = 1;
+                        //LLamamos una función miembro de la clase mediante el objeto miclase
+                        miClase.EstablecerInductanciaTotal(inductancia);
+                        break;
+
+                    default:
+                        cout << "Operacion no valida\n";
+                        break;
+
+                    }
+                    printf("\nRESUMEN FINAL:\n\a");
+
+
+
+                    if ((Iparalelo == R1) && (omitir == 1)) {
+                        printf("** Seleccionaste que cuentas con un solo inductor en tu circuito paralelo.\n\a");
+                        printf("Recuerda que si solo tienes un inductor en tu circuito, la inductancia total es la misma\n");
+
+                        printf("Reinicia la calculadora y vulve a intentarlo :)\n\n\n\n");
+                        exit(0);
+
+                    }
+
+                    else {
+                        cout << "**La Inductantancia total es: " << miClase.ObtenerInductancia() << " Henrios\n\n\n\n" << endl;
+                    }
+                    break;
+
+                case '2'://Corriente ,voltaje y reactancia inductiva
+                    printf("A continuación podrás calcular la Reactancia inductiva, voltaje y Corriente totales de un circuito, para hacerlo\n");
+                    printf("necesitarás dos de los tres datos\n\n");
+                    printf("NOTA: La reactancia inductiva se presenta por el efecto electromagnetico de una bobina energizada, lo que genera\n");
+                    printf("oposición al flujo de electrones (corriente). Lo anterior puede considerarse como una resistencia en ohms.\n\n");
+
+
+                    printf("¿Qué valores conoces?\n");
+                    printf("1). Voltaje y Corriente\n");
+                    printf("2). Voltaje y Reactancia Inductiva\n");
+                    printf("3). Reactancia Inductiva y Corriente\n\n");
+
+                    //A continuación utilizaremos la ley de ohm para generar los cálculos
+
+                    ValoresConocidos3 = ElegirValoresConocidos();
+                    switch (ValoresConocidos3)
+                    {
+                    case '1'://Voltaje y corriente
+                        cout << "Introduce el valor del voltaje (en volts)\n";
+                        cin >> Voltaje;
+                        cout << "Introduce el valor de la Corriente (en amperes)\n";
+                        cin >> Corriente;
+                        //LLamamos una función miembro de la clase mediante el objeto miclase
+                       //Para Realizar la Operación
+                        miClase.EstablecerValoresVRI(Voltaje, Resistencia, Corriente);
+                        miClase.ResistenciaTotal(Voltaje, Corriente);
+
+                        break;
+                    case '2'://Voltaje y resistencias
+                        cout << "Introduce el valor del voltaje (en volts)\n";
+                        cin >> Voltaje;
+                        cout << "Introduce el valor de la Reactancia inductiva  (en ohms)\n";
+                        cin >> Resistencia;
+
+                        //Para Realizar la Operación
+                        miClase.EstablecerValoresVRI(Voltaje, Resistencia, Corriente);
+                        miClase.CorrienteTotal(miClase.ObtenerR(), miClase.ObtenerV());
+                        break;
+
+                    case '3': //Corriente y resistencias
+                        cout << "Introduce el valor de la Reactancia inductiva (en ohms)\n";
+                        cin >> Resistencia;
+                        cout << "Introduce el valor de la Corriente (en amperes)";
+                        cin >> Corriente;
+
+                        miClase.EstablecerValoresVRI(Voltaje, Resistencia, Corriente);
+                        miClase.VoltajeTotal(Resistencia, Corriente);
+                        break;
+
+                    default:
+                        cout << "Operacion no valida\n";
+                        break;
+                    }
+                    printf("\nRESUMEN FINAL:\n\a");
+
+                    if ((Resistencia == 0) || (Voltaje == 0) || (Corriente == 0)) {
+                        printf("El valor de una variable introducida NO ES VÁLIDO, esto pasa cuando:\n\n\a");
+                        printf("** Has proporcionado un valor 0 a alguna de las variables de Voltaje, Corriente o Reactancia inductiva\n");
+                        printf("Recuerda que para los cálculos con ley de ohm requieres los valores de 2 variables que sean diferentes a 0\n");
+                        printf("SOLUCIÓN: Reinicia la calculadora y digita valores válidos diferentes a 0 \n\n\n\n");
+
+                     
+                        exit(0);
+
+                    }
+                    else {
+                        cout << "**La Corriente es: " << miClase.ObtenerI() << " Amperes\n" << endl;
+                        cout << "**La Reactancia inductiva es: " << miClase.ObtenerR() << " Ohms\n" << endl;
+                        cout << "**El Voltaje es: " << miClase.ObtenerV() << " Volts\n\n\n\n" << endl;
+                    }
+                    break;
+                }
+                break;
+               
+            case '6': //SALIR
                 exit(0);
                 break;
                 // Si ninguno de los casos anteriores se cumplió, entonces realiza lo siguiente
@@ -356,7 +665,7 @@ int main()
 
                
         }
-        while (option != 4);
+        while (option != 6);
    
     return 0;
 }
@@ -373,7 +682,7 @@ int main()
         do {
             cout << "Digita el número de la operación: ";
             cin >> option;
-        } while (option != '1' && option != '2' && option != '3' && option != '4');
+        } while (option != '1' && option != '2' && option != '3' && option != '4' && option != '5' && option != '6');
         return option;
     }
 
@@ -389,12 +698,12 @@ int main()
    
     char ElegirValoresConocidos()
     {
-        char ValoresConocidosOhm;
+        char ValoresConocidos3;
         do {
             cout << "Digita el número de la operación: ";
-            cin >> ValoresConocidosOhm;
-        } while (ValoresConocidosOhm != '1' && ValoresConocidosOhm != '2' && ValoresConocidosOhm != '3');
-        return ValoresConocidosOhm;
+            cin >> ValoresConocidos3;
+        } while (ValoresConocidos3 != '1' && ValoresConocidos3 != '2' && ValoresConocidos3 != '3');
+        return ValoresConocidos3;
     }
 
     char    DefinirNResistencias()
@@ -617,4 +926,181 @@ int main()
         voltajeUmbral = 3.4;
     }
     return codigo;
+    }
+
+    //Capacitores
+
+    char    DefinirNCapacitores()
+    {
+        char NCapacitores;
+
+        do {
+            printf("Introduce el valor de los capacitores (en Faradios)\n");
+            printf("¿Cuántos capacitores tiene tu circuito¨?\n  Respuesta: ");
+            cin >> NCapacitores;
+
+        } while (NCapacitores != '1' && NCapacitores != '2' && NCapacitores != '3' && NCapacitores != '4' && NCapacitores != '5' && NCapacitores != '6');
+
+        if (NCapacitores == '1') {
+            cout << "Valor capacitor 1: ";
+            cin >> R1;
+            Cparalelo = R1;
+            Cserie = R1;
+
+        }
+        else if (NCapacitores == '2') {
+            cout << "Valor capacitor 1: ";
+            cin >> R1;
+            cout << "Valor capacitor 2: ";
+            cin >> R2;
+            Cserie = 1 / ((1 / R1) + (1 / R2));
+            Cparalelo = R1 + R2;
+        }
+        else if (NCapacitores == '3') {
+            cout << "Valor capacitor 1: ";
+            cin >> R1;
+            cout << "Valor capacitor 2: ";
+            cin >> R2;
+            cout << "Valor capacitor 3: ";
+            cin >> R3;
+            Cserie = 1 / ((1 / R1) + (1 / R2) + (1 / R3));
+            Cparalelo = R1 + R2 + R3;
+
+        }
+        else if (NCapacitores == '4') {
+            cout << "Valor capacitor 1: ";
+            cin >> R1;
+            cout << "Valor capacitor 2: ";
+            cin >> R2;
+            cout << "Valor capacitor 3: ";
+            cin >> R3;
+            cout << "Valor capacitor 4: ";
+            cin >> R4;
+             Cserie = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4));
+             Cparalelo = R1 + R2 + R3 + R4;
+
+        }
+        else if (NCapacitores == '5') {
+            cout << "Valor capacitor 1: ";
+            cin >> R1;
+            cout << "Valor capacitor 2: ";
+            cin >> R2;
+            cout << "Valor capacitor 3: ";
+            cin >> R3;
+            cout << "Valor capacitor 4: ";
+            cin >> R4;
+            cout << "Valor capacitor 5: ";
+            cin >> R5;
+            Cserie = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5));
+            Cparalelo = R1 + R2 + R3 + R4 + R5;
+
+        }
+        else if (NCapacitores == '6') {
+            cout << "Valor capacitor 1: ";
+            cin >> R1;
+            cout << "Valor capacitor 2: ";
+            cin >> R2;
+            cout << "Valor capacitor 3: ";
+            cin >> R3;
+            cout << "Valor capacitor 4: ";
+            cin >> R4;
+            cout << "Valor capacitor 5: ";
+            cin >> R5;
+            cout << "Valor capacitor 6: ";
+            cin >> R6;
+            Cserie = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
+            Cparalelo = R1 + R2 + R3 + R4 + R5 + R6;
+
+        }
+        return NCapacitores;
+    }
+
+    //INDUCTORES
+    char    DefinirNInductores()
+    {
+        char NInductores;
+
+        do {
+            printf("Introduce el valor de los inductores (en Henrios)\n");
+            printf("¿Cuántos inductores tiene tu circuito¨?\n  Respuesta: ");
+            cin >> NInductores;
+
+        } while (NInductores != '1' && NInductores != '2' && NInductores != '3' && NInductores != '4' && NInductores != '5' && NInductores != '6');
+
+        if (NInductores == '1') {
+            cout << "Valor inductor 1: ";
+            cin >> R1;
+            Iparalelo = R1;
+            Iserie = R1;
+
+        }
+        else if (NInductores == '2') {
+            cout << "Valor inductor 1: ";
+            cin >> R1;
+            cout << "Valor inductor 2: ";
+            cin >> R2;
+            Iparalelo = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
+            Iserie = R1 + R2 + R3 + R4 + R5 + R6;
+
+        }
+        else if (NInductores == '3') {
+            cout << "Valor inductor 1: ";
+            cin >> R1;
+            cout << "Valor inductor 2: ";
+            cin >> R2;
+            cout << "Valor inductor 3: ";
+            cin >> R3;
+            Iparalelo = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
+            Iserie = R1 + R2 + R3 + R4 + R5 + R6;
+
+
+        }
+        else if (NInductores == '4') {
+            cout << "Valor inductor 1: ";
+            cin >> R1;
+            cout << "Valor inductor 2: ";
+            cin >> R2;
+            cout << "Valor inductor 3: ";
+            cin >> R3;
+            cout << "Valor inductor 4: ";
+            cin >> R4;
+            Iparalelo = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
+            Iserie = R1 + R2 + R3 + R4 + R5 + R6;
+
+
+        }
+        else if (NInductores == '5') {
+            cout << "Valor inductor 1: ";
+            cin >> R1;
+            cout << "Valor inductor 2: ";
+            cin >> R2;
+            cout << "Valor inductor 3: ";
+            cin >> R3;
+            cout << "Valor inductor 4: ";
+            cin >> R4;
+            cout << "Valor inductor 5: ";
+            cin >> R5;
+            Iparalelo = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
+            Iserie = R1 + R2 + R3 + R4 + R5 + R6;
+
+
+        }
+        else if (NInductores == '6') {
+            cout << "Valor inductor 1: ";
+            cin >> R1;
+            cout << "Valor inductor 2: ";
+            cin >> R2;
+            cout << "Valor inductor 3: ";
+            cin >> R3;
+            cout << "Valor inductor 4: ";
+            cin >> R4;
+            cout << "Valor inductor 5: ";
+            cin >> R5;
+            cout << "Valor inductor 6: ";
+            cin >> R6;
+            Iparalelo = 1 / ((1 / R1) + (1 / R2) + (1 / R3) + (1 / R4) + (1 / R5) + (1 / R6));
+            Iserie = R1 + R2 + R3 + R4 + R5 + R6;
+
+        }
+        return NInductores;
     }
