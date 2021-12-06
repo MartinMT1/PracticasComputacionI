@@ -1,7 +1,7 @@
 /*
 *Authors: Martín Morales Trejo and Gabriel Peytral Borja
 *e-mail: martin.mo.tre@comunidad.unam.mx//Gabrielpeytral@comunidad.unam.mx
-*Oct 18, 2021
+*Dic 05, 2021
  Definición de la clase OperacionesDeCalculadora. Este archivo representa la interfáz public de
  la clase "OperacionesDeCalculadora" sin revelar las implementaciones de las funciones miembro, las
  cuales están definidas en OperacionesDeCalculadora.cpp
@@ -20,6 +20,8 @@ class OperacionesDeCalculadora {
 public:
 	//Operaciones:
 //Ley de Ohm
+	~OperacionesDeCalculadora(); //destructor
+
 	void EstablecerValoresVRI(float Voltaje, float Resistencia, float Corriente); //Función para darle el valor a las variables de VRI
 	void ResistenciaTotal(float Voltaje, float Corriente);
 	void VoltajeTotal(float Resistencia, float Corriente);
@@ -37,6 +39,10 @@ public:
 	double ObtenerValorResistencia();
 	char ObtenerEscala();
 	std::string ObtenerTolerancia();
+	//Con 5 bandas
+	void EstablecerValoresDeBanda(double primer, double segunda, double tercera, double cuarta); //Función para darle el valor a las variables
+	void ValorDeResistencia(double primer, double segunda, double tercera, double cuarta);
+
 
 	//Definir valor de resistenica para Diodo LED
 
@@ -72,7 +78,7 @@ public:
 
 	//Definimos las "variables atributo" o los "datos miembros"
 	/*
-	Nota: Estas variablews se encuentran en una o más implementaciones, por lo que
+	Nota: Estas variables se encuentran en una o más implementaciones, por lo que
 	establecerlas aqui genera que esta tome un valor diferecte (significativo) cada
 	que se llame alguna función miembro que la incluya.
 	*/
@@ -88,7 +94,8 @@ private:
 	double ValorResistencia = 0;
 	double PrimerBanda = 0;
 	double SegundaBanda = 0;
-	double TercerBandaMultiplicadora = 0;
+	double TercerBanda = 0;
+	double CuartaBanda = 0;
 	char Escala = 0;
 	std::string Tolerancia;
 

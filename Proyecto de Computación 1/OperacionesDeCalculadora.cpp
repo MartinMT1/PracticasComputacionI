@@ -1,7 +1,7 @@
 /*
 *Authors: Martín Morales Trejo and Gabriel Peytral Borja
 *e-mail: martin.mo.tre@comunidad.unam.mx//Gabrielpeytral@comunidad.unam.mx
-*Oct 18, 2021
+*Dic 05, 2021
  Definición de las funciones miembro de la clase OperacionesDeCalculadora. Este archivo contiene
  implementaciones de las funciones miembreo (atributos) cuyo prototipo está
  en CalculadoraDeElectronica.h
@@ -12,6 +12,10 @@
 #include "CalculadoraDeElectronica.h"
 
 using namespace std;
+
+//Destructor
+OperacionesDeCalculadora::~OperacionesDeCalculadora() {
+}
 
 //Definición de funciones para Ley de Ohm
 
@@ -44,7 +48,7 @@ float OperacionesDeCalculadora::ObtenerI() {
 void OperacionesDeCalculadora::EstablecerValoresDeBanda(double primer, double segunda, double tercera) {//Función para darle el valor a las variables
 	PrimerBanda = primer;
 	SegundaBanda = segunda;
-	TercerBandaMultiplicadora = tercera;	
+	TercerBanda = tercera;
 }
 void OperacionesDeCalculadora::EstablecerValorTolerancia(string tolerancia) {
 	Tolerancia = tolerancia;
@@ -63,6 +67,17 @@ char OperacionesDeCalculadora::ObtenerEscala() {
 }
 string OperacionesDeCalculadora::ObtenerTolerancia() {
 	return Tolerancia;
+}
+
+// con 5 bandas de colores
+void OperacionesDeCalculadora::EstablecerValoresDeBanda(double primer, double segunda, double tercera, double cuarta) {
+	PrimerBanda = primer;
+	SegundaBanda = segunda;
+	TercerBanda = tercera;
+	CuartaBanda = cuarta;
+}
+void OperacionesDeCalculadora::ValorDeResistencia(double primer, double segunda, double tercera, double cuarta) {
+	ValorResistencia = ((100 * primer + 10*segunda + tercera) * cuarta);
 }
 
 		//Definir valor de resistenica para Diodo LED
